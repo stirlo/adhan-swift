@@ -1,4 +1,3 @@
-
 // script.js
 function getLocation() {
     if ("geolocation" in navigator) {
@@ -16,25 +15,30 @@ function success(position) {
 
 function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
-    // Provide a more user-friendly message or alternative here
     alert('Error: Unable to retrieve your location. Please ensure location services are enabled and you have granted permission.');
 }
 
-getLocation();
-
 function fetchPrayerTimes(latitude, longitude) {
-    const url = `http://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`;
+    const method = 2; // Change this based on your calculation method
+    const url = `http://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=${method}`;
+
     fetch(url)
         .then(response => response.json())
         .then(data => {
             const times = data.data.timings;
-            document.getElementById('fajr').textContent += `: ${times.Fajr}`;
-            document.getElementById('dhuhr').textContent += `: ${times.Dhuhr}`;
-            document.getElementById('asr').textContent += `: ${times.Asr}`;
-            document.getElementById('maghrib').textContent += `: ${times.Maghrib}`;
-            document.getElementById('isha').textContent += `: ${times.Isha}`;
-            // Qiyyam is not directly provided, calculate based on Isha or use a fixed time after Isha
-            document.getElementById('islamicDate').textContent = `Islamic Date: ${data.data.date.hijri.date}`;
+            updatePrayerTimesButtons(times);
         })
-        .catch(console.error);
+        .catch(error => console.error('Error fetching prayer times:', error));
 }
+
+function updatePrayerTimesButtons(times) {
+    document.getElementById('fajr').textContent = `Fajr: ${times.Fajr}`;
+    document.getElementById('dhuhr').textContent = `Dhuhr: ${times.Dhuhr}`;
+    document.getElementById('asr').textContent = `Asr: ${times.Asr}`;
+    document.getElementById('maghrib').textContent = `Maghrib: ${times.Maghrib}`;
+    document.getElementById('isha').textContent = `Isha: ${times.Isha}`;
+    // Qiyyam is not directly provided by Aladhan API, so you might need to calculate it or use Isha for demonstration
+    document.getElementById('qiyyam').textContent = `Qiyyam: Not Available`;
+}
+
+getLocation();
