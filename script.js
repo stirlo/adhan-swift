@@ -1,5 +1,12 @@
+
 // script.js
-navigator.geolocation.getCurrentPosition(success, error);
+function getLocation() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+        alert('Geolocation is not supported by your browser');
+    }
+}
 
 function success(position) {
     const latitude = position.coords.latitude;
@@ -7,9 +14,13 @@ function success(position) {
     fetchPrayerTimes(latitude, longitude);
 }
 
-function error() {
-    alert('Unable to retrieve your location');
+function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+    // Provide a more user-friendly message or alternative here
+    alert('Error: Unable to retrieve your location. Please ensure location services are enabled and you have granted permission.');
 }
+
+getLocation();
 
 function fetchPrayerTimes(latitude, longitude) {
     const url = `http://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`;
