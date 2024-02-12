@@ -1,0 +1,23 @@
+/* style.css */
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#prayerTimes {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#prayerTimes button {
+    flex-grow: 1;
+    font-size: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+}
