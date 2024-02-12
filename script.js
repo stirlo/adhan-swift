@@ -41,4 +41,29 @@ function updatePrayerTimesButtons(times) {
     document.getElementById('qiyyam').textContent = `Qiyyam: Not Available`;
 }
 
+function fetchIslamicDate(latitude, longitude) {
+    const url = `http://api.aladhan.com/v1/gToH?latitude=${latitude}&longitude=${longitude}&adjustment=1`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const hijriDate = data.data.hijri.date;
+            updateIslamicDateFooter(hijriDate);
+        })
+        .catch(error => console.error('Error fetching Islamic date:', error));
+}
+
+function updateIslamicDateFooter(hijriDate) {
+    document.getElementById('islamicDate').textContent = `Islamic Date: ${hijriDate}`;
+}
+
+// Modify the success function to also fetch the Islamic date
+function success(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    fetchPrayerTimes(latitude, longitude);
+    fetchIslamicDate(latitude, longitude); // Fetch Islamic date
+}
+
+
 getLocation();
