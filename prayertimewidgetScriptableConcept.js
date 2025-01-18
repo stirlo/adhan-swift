@@ -1,7 +1,6 @@
 // Prayer Times Widget for Scriptable iOS
-// Version 8.5.2 - Global System with Precise Lunar Calculations & Focus Mode
-// Last updated: 2025-01-15
-// Supports iOS 16.0+ and macOS
+// Version 8.5.3 - Global System with Precise Lunar Calculations & Focus Mode
+// Last updated: 2025-01-18
 
 class PrayerCalculator {
     constructor() {
@@ -344,10 +343,23 @@ class PrayerWidget {
 
             bottomStack.addSpacer(4);
 
-            // Updated lunar date calculation with confirmed date for 15 Rajab 1446
-            const baseDay = 15; // Today is 15 Rajab 1446 AH
-            const adjustedLunarDay = now > maghribTime ? baseDay + 1 : baseDay;
-            const dateText = bottomStack.addText(`${adjustedLunarDay}/7`);
+            // Updated lunar date calculation using JSON data
+            let hijriDay = todayData.dates.hijri.day;
+            let hijriMonth = todayData.dates.hijri.month;
+
+            // Adjust for after Maghrib
+            if (now > maghribTime) {
+                hijriDay++;
+                if (hijriDay > 30) {
+                    hijriDay = 1;
+                    hijriMonth++;
+                    if (hijriMonth > 12) {
+                        hijriMonth = 1;
+                    }
+                }
+            }
+
+            const dateText = bottomStack.addText(`${hijriDay}/${hijriMonth}`);
             dateText.font = Font.mediumSystemFont(12);
             dateText.textColor = Color.white();
 
