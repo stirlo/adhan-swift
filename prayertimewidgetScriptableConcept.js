@@ -9,9 +9,9 @@ class PrayerCalculator {
             fileName: "yearly_prayer_times.json",
             useICloud: true,
             location: {
-                name: "Town/Location",
-                latitude: -0.0,
-                longitude: 0.0
+                name: "Melbourne",
+                latitude: -37.000000,
+                longitude: 145.000000
             }
         };
 
